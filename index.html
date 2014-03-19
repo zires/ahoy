@@ -34,6 +34,8 @@
     <meta property="og:image" content="https://github.global.ssl.fastly.net/images/gravatars/gravatar-user-420.png"/>
     <meta property="og:description" content="Simple, powerful visit tracking for Rails"/>
 
+    <script src="//www.google.com/jsapi"></script>
+    <script src="chartkick.js"></script>
   </head>
   <body>
     <a href="https://github.com/ankane/ahoy" style="position: fixed; top: 15px; right: 15px; border: 0; z-index: 1000;" class="btn btn-info">Github</a>
@@ -102,6 +104,13 @@ rake db:migrate
 <span class="no">Visit</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="ss">:country</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
 <span class="no">Visit</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="ss">:referring_domain</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
 </pre></div>
+
+<div id="chart-1" style="height: 300px; text-align: center; color: #999; line-height: 300px; font-size: 14px; font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;">
+  Loading...
+</div>
+<script type="text/javascript">
+  new Chartkick.LineChart("chart-1", {"2014-03-05 00:00:00 -0800":27,"2014-03-06 00:00:00 -0800":38,"2014-03-07 00:00:00 -0800":22,"2014-03-08 00:00:00 -0800":27,"2014-03-09 00:00:00 -0800":27,"2014-03-10 00:00:00 -0700":33,"2014-03-11 00:00:00 -0700":40,"2014-03-12 00:00:00 -0700":27,"2014-03-13 00:00:00 -0700":34,"2014-03-14 00:00:00 -0700":33,"2014-03-15 00:00:00 -0700":29,"2014-03-16 00:00:00 -0700":45,"2014-03-17 00:00:00 -0700":41,"2014-03-18 00:00:00 -0700":41}, {});
+</script>
 
 <p><a href="http://chartkick.com/">Chartkick</a> and <a href="https://github.com/ankane/groupdate">Groupdate</a> make it super easy to visualize the data.</p>
 
