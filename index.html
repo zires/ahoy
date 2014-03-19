@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ahoy - Simple, Powerful Visit Tracking for Rails</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="github.css">
+    <style>
+      body {
+        padding-bottom: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+      }
+
+      h2, h3, h4 {
+        margin-top: 1em;
+      }
+
+      p {
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+      }
+
+      p.lead {
+        margin-top: 0;
+      }
+    </style>
+
+    <meta property="og:title" content="Ahoy"/>
+    <meta property="og:url" content="http://ankane.github.io/ahoy/"/>
+    <meta property="og:image" content="https://github.global.ssl.fastly.net/images/gravatars/gravatar-user-420.png"/>
+    <meta property="og:description" content="Simple, powerful visit tracking for Rails"/>
+
+  </head>
+  <body>
+    <a href="https://github.com/ankane/ahoy" style="position: fixed; top: 15px; right: 15px; border: 0; z-index: 1000;" class="btn btn-info">Github</a>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1 style="margin-bottom: 0.5em; margin-top: 15px;">Ahoy</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <p class="lead"><img class="emoji" title=":fire:" alt=":fire:" src="https://github.global.ssl.fastly.net/images/icons/emoji/fire.png" height="20" width="20" align="absmiddle"> Simple, powerful visit tracking for Rails</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <hr style="margin-top: 0;" />
+
+<!-- begin readme -->
+
+<p>You get:</p>
+
+<ul>
+<li>traffic source - referrer, referring domain, landing page, search keyword</li>
+<li>location - country, region, and city</li>
+<li>technology - browser, OS, and device type</li>
+<li>utm parameters - source, medium, term, content, campaign</li>
+</ul><p>It’s all stored in <strong>your database</strong> so you can easily combine it with other data.</p>
+
+<p>See which campaigns generate the most revenue effortlessly.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"utm_campaign"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="ss">:revenue</span><span class="p">)</span>
+</pre></div>
+
+<h2>
+<a name="ready-set-go" class="anchor" href="#ready-set-go"><span class="octicon octicon-link"></span></a>Ready, Set, Go</h2>
+
+<p>Add this line to your application’s Gemfile:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s2">"ahoy_matey"</span>
+</pre></div>
+
+<p>And run the generator. This creates a migration to store visits.</p>
+
+<div class="highlight highlight-sh"><pre>rails generate ahoy:install
+rake db:migrate
+</pre></div>
+
+<p>Lastly, include the javascript file in <code>app/assets/javascripts/application.js</code> after jQuery.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">//= require jquery</span>
+<span class="c1">//= require ahoy</span>
+</pre></div>
+
+<h2>
+<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How It Works</h2>
+
+<p>When someone visits your website, Ahoy creates a visit with lots of useful information.</p>
+
+<p>Use the <code>current_visit</code> method to access it.</p>
+
+<p>Explore your visits with queries like:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Visit</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="ss">:search_keyword</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
+<span class="no">Visit</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="ss">:country</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
+<span class="no">Visit</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="ss">:referring_domain</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<p><a href="http://chartkick.com/">Chartkick</a> and <a href="https://github.com/ankane/groupdate">Groupdate</a> make it super easy to visualize the data.</p>
+
+<div class="highlight highlight-erb"><pre><span class="cp">&lt;%=</span> <span class="n">line_chart</span> <span class="no">Visit</span><span class="o">.</span><span class="n">group_by_day</span><span class="p">(</span><span class="ss">:created_at</span><span class="p">)</span><span class="o">.</span><span class="n">count</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></div>
+
+<h2>
+<a name="the-power" class="anchor" href="#the-power"><span class="octicon octicon-link"></span></a>The Power</h2>
+
+<p>This information is great on its own, but super powerful when combined with other models.</p>
+
+<p>You can associate the visit with any model. For instance, when someone places an order:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+  <span class="n">visit_id</span><span class="p">:</span> <span class="n">current_visit</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:id</span><span class="p">),</span>
+  <span class="c1"># ... other attributes ...</span>
+<span class="p">)</span>
+</pre></div>
+
+<p>To see where most of your orders are coming from, create an association:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:visit</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>And query away:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"referring_domain"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
+<span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"device_type"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
+<span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"city"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+
+<h2>
+<a name="users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h2>
+
+<p>Ahoy automatically attaches the <code>current_user</code> to the <code>current_visit</code>.</p>
+
+<p>With <a href="https://github.com/plataformatec/devise">Devise</a>, it will attach the user even if he / she signs in after the visit starts.</p>
+
+<p>To see the visits for a given user, create an association:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">has_many</span> <span class="ss">:visits</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>And use:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">first</span>
+<span class="n">user</span><span class="o">.</span><span class="n">visits</span>
+</pre></div>
+
+<h2>
+<a name="location" class="anchor" href="#location"><span class="octicon octicon-link"></span></a>Location</h2>
+
+<p>Ahoy uses <a href="https://github.com/alexreisner/geocoder">Geocoder</a> for IP-based geocoding.</p>
+
+<h2>
+<a name="utm-parameters" class="anchor" href="#utm-parameters"><span class="octicon octicon-link"></span></a>UTM Parameters</h2>
+
+<p>Use UTM Parameters to track campaigns. <a href="http://www.thunderseo.com/blog/utm-parameters/">This is great for emails and social media</a>. Just add them to your links and Ahoy will pick them up.</p>
+
+<pre><code>http://datakick.org/?utm_medium=email&amp;utm_campaign=newsletter&amp;utm_source=newsletter-2014-03
+</code></pre>
+
+<p>or</p>
+
+<pre><code>http://datakick.org/?utm_medium=twitter&amp;utm_campaign=social&amp;utm_source=tweet123
+</code></pre>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Excludes bots</li>
+<li>Degrades gracefully when cookies are disabled</li>
+</ul><h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
+
+<ul>
+<li>set visit_id automatically on <code>visitable</code> models</li>
+<li>simple dashboard</li>
+<li>hook to store additional fields</li>
+<li>turn off modules</li>
+</ul><h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Everyone is encouraged to help improve this project. Here are a few ways you can help:</p>
+
+<ul>
+<li><a href="https://github.com/ankane/ahoy/issues">Report bugs</a></li>
+<li>Fix bugs and <a href="https://github.com/ankane/ahoy/pulls">submit pull requests</a>
+</li>
+<li>Write, clarify, or fix documentation</li>
+<li>Suggest or add new features</li>
+</ul>
+
+<!-- end readme -->
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39027070-6', 'github.io');
+      ga('send', 'pageview');
+    </script>
+
+  </body>
+</html>
