@@ -120,13 +120,14 @@ rake db:migrate
 
 <p>This information is great on its own, but super powerful when combined with other models.</p>
 
-<p>You can associate the visit with any model. For instance, when someone places an order:</p>
+<p>Let’s associate orders with visits.</p>
 
-<div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-  <span class="n">visit_id</span><span class="p">:</span> <span class="n">current_visit</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:id</span><span class="p">),</span>
-  <span class="c1"># ... other attributes ...</span>
-<span class="p">)</span>
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">visitable</span>
+<span class="k">end</span>
 </pre></div>
+
+<p>When a visitor places an order, the <code>visit_id</code> column will be automatically set. Magic!</p>
 
 <p>To see where most of your orders are coming from, create an association:</p>
 
