@@ -62,35 +62,17 @@
 <p>You get:</p>
 
 <ul>
-<li>traffic source - referrer, referring domain, landing page, search keyword</li>
-<li>location - country, region, and city</li>
-<li>technology - browser, OS, and device type</li>
-<li>utm parameters - source, medium, term, content, campaign</li>
+<li>
+<strong>traffic source</strong> - referrer, referring domain, landing page, search keyword</li>
+<li>
+<strong>location</strong> - country, region, and city</li>
+<li>
+<strong>technology</strong> - browser, OS, and device type</li>
+<li>
+<strong>utm parameters</strong> - source, medium, term, content, campaign</li>
 </ul><p>See which campaigns generate the most revenue effortlessly.</p>
 
 <div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"utm_campaign"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="ss">:revenue</span><span class="p">)</span>
-</pre></div>
-
-<p>Goes great with services like <a href="http://www.google.com/analytics/">Google Analytics</a></p>
-
-<h2>
-<a name="ready-set-go" class="anchor" href="#ready-set-go"><span class="octicon octicon-link"></span></a>Ready, Set, Go</h2>
-
-<p>Add this line to your application’s Gemfile:</p>
-
-<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'ahoy_matey'</span>
-</pre></div>
-
-<p>And run the generator. This creates a migration to store visits.</p>
-
-<div class="highlight highlight-sh"><pre>rails generate ahoy:install
-rake db:migrate
-</pre></div>
-
-<p>Lastly, include the javascript file in <code>app/assets/javascripts/application.js</code> after jQuery.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="c1">//= require jquery</span>
-<span class="c1">//= require ahoy</span>
 </pre></div>
 
 <h2>
@@ -119,8 +101,8 @@ rake db:migrate
 <div class="highlight highlight-erb"><pre><span class="cp">&lt;%=</span> <span class="n">line_chart</span> <span class="no">Visit</span><span class="o">.</span><span class="n">group_by_day</span><span class="p">(</span><span class="ss">:created_at</span><span class="p">)</span><span class="o">.</span><span class="n">count</span> <span class="cp">%&gt;</span><span class="x"></span>
 </pre></div>
 
-<h2>
-<a name="the-power" class="anchor" href="#the-power"><span class="octicon octicon-link"></span></a>The Power</h2>
+<h3>
+<a name="the-power" class="anchor" href="#the-power"><span class="octicon octicon-link"></span></a>The Power</h3>
 
 <p>This information is great on its own, but super powerful when combined with other models.</p>
 
@@ -135,15 +117,15 @@ rake db:migrate
 
 <p><img class="emoji" title=":tada:" alt=":tada:" src="https://github.global.ssl.fastly.net/images/icons/emoji/tada.png" height="20" width="20" align="absmiddle"> Magic!</p>
 
-<p>To see where your orders are coming from, use:</p>
+<p>See where orders are coming from with simple joins:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"referring_domain"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
 <span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"city"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
 <span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"device_type"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span>
 </pre></div>
 
-<h2>
-<a name="users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h2>
+<h3>
+<a name="users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h3>
 
 <p>Ahoy automatically attaches the <code>current_user</code> to the <code>current_visit</code>.</p>
 
@@ -162,13 +144,8 @@ rake db:migrate
 <span class="n">user</span><span class="o">.</span><span class="n">visits</span>
 </pre></div>
 
-<h2>
-<a name="location" class="anchor" href="#location"><span class="octicon octicon-link"></span></a>Location</h2>
-
-<p>Ahoy uses <a href="https://github.com/alexreisner/geocoder">Geocoder</a> for IP-based geocoding.</p>
-
-<h2>
-<a name="utm-parameters" class="anchor" href="#utm-parameters"><span class="octicon octicon-link"></span></a>UTM Parameters</h2>
+<h3>
+<a name="utm-parameters" class="anchor" href="#utm-parameters"><span class="octicon octicon-link"></span></a>UTM Parameters</h3>
 
 <p>Use UTM Parameters to track campaigns. <a href="http://www.thunderseo.com/blog/utm-parameters/">This is great for emails and social media</a>. Just add them to your links and Ahoy will pick them up.</p>
 
@@ -180,13 +157,40 @@ rake db:migrate
 <pre><code>http://datakick.org/?utm_medium=twitter&amp;utm_campaign=social&amp;utm_source=tweet123
 </code></pre>
 
-<h2>
-<a name="more-features" class="anchor" href="#more-features"><span class="octicon octicon-link"></span></a>More Features</h2>
+<h3>
+<a name="location" class="anchor" href="#location"><span class="octicon octicon-link"></span></a>Location</h3>
+
+<p>Ahoy uses <a href="https://github.com/alexreisner/geocoder">Geocoder</a> for IP-based geocoding.</p>
+
+<h3>
+<a name="more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
 
 <ul>
 <li>Excludes bots</li>
 <li>Degrades gracefully when cookies are disabled</li>
 </ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add this line to your application’s Gemfile:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'ahoy_matey'</span>
+</pre></div>
+
+<p>And run the generator. This creates a model to store visits.</p>
+
+<div class="highlight highlight-sh"><pre>rails generate ahoy:install
+rake db:migrate
+</pre></div>
+
+<p>Lastly, include the javascript file in <code>app/assets/javascripts/application.js</code> after jQuery.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">//= require jquery</span>
+<span class="c1">//= require ahoy</span>
+</pre></div>
+
+<p>We recommend using traditional analytics services like <a href="http://www.google.com/analytics/">Google Analytics</a> as well.</p>
+
+<h2>
 <a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
 
 <ul>
