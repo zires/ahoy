@@ -57,6 +57,8 @@
 
 <!-- begin readme -->
 
+<p>Visits are stored in <strong>your database</strong> so you can easily combine them with other data.</p>
+
 <p>You get:</p>
 
 <ul>
@@ -64,19 +66,19 @@
 <li>location - country, region, and city</li>
 <li>technology - browser, OS, and device type</li>
 <li>utm parameters - source, medium, term, content, campaign</li>
-</ul><p>It’s all stored in <strong>your database</strong> so you can easily combine it with other data.</p>
-
-<p>See which campaigns generate the most revenue effortlessly.</p>
+</ul><p>See which campaigns generate the most revenue effortlessly.</p>
 
 <div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"utm_campaign"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="ss">:revenue</span><span class="p">)</span>
 </pre></div>
+
+<p>Goes great with services like <a href="http://www.google.com/analytics/">Google Analytics</a></p>
 
 <h2>
 <a name="ready-set-go" class="anchor" href="#ready-set-go"><span class="octicon octicon-link"></span></a>Ready, Set, Go</h2>
 
 <p>Add this line to your application’s Gemfile:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s2">"ahoy_matey"</span>
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'ahoy_matey'</span>
 </pre></div>
 
 <p>And run the generator. This creates a migration to store visits.</p>
