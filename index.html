@@ -206,13 +206,6 @@
 
 <p>After 4 hours, create another visit and use the updated visit token.</p>
 
-<p>To change the platform on the web, use:</p>
-
-<div class="highlight highlight-html"><pre><span class="nt">&lt;script&gt;</span>
-  <span class="kd">var</span> <span class="nx">Ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"platform"</span><span class="o">:</span> <span class="s2">"Mobile Web"</span><span class="p">}</span>
-<span class="nt">&lt;/script&gt;</span>
-</pre></div>
-
 <h3>
 <a name="user-content-more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
 
@@ -248,6 +241,13 @@ rake db:migrate
 <p>Use a different model</p>
 
 <div class="highlight highlight-ruby"><pre><span class="no">Ahoy</span><span class="o">.</span><span class="n">visit_model</span> <span class="o">=</span> <span class="no">UserVisit</span>
+</pre></div>
+
+<p>Change the platform on the web</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script&gt;</span>
+  <span class="kd">var</span> <span class="nx">Ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"platform"</span><span class="o">:</span> <span class="s2">"Mobile Web"</span><span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
 </pre></div>
 
 <h2>
