@@ -76,7 +76,7 @@
 </pre></div>
 
 <h2>
-<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How It Works</h2>
+<a name="user-content-how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How It Works</h2>
 
 <p>When someone visits your website, Ahoy creates a visit with lots of useful information.</p>
 
@@ -102,7 +102,7 @@
 </pre></div>
 
 <h3>
-<a name="the-power" class="anchor" href="#the-power"><span class="octicon octicon-link"></span></a>The Power</h3>
+<a name="user-content-the-power" class="anchor" href="#the-power"><span class="octicon octicon-link"></span></a>The Power</h3>
 
 <p>This information is great on its own, but super powerful when combined with other models.</p>
 
@@ -125,11 +125,21 @@
 </pre></div>
 
 <h3>
-<a name="users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h3>
+<a name="user-content-users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h3>
 
 <p>Ahoy automatically attaches the <code>current_user</code> to the <code>current_visit</code>.</p>
 
+<p>If you define your own <code>current_user</code> method, be sure to add it to <code>ActionController::Base</code>, not <code>ApplicationController</code>.</p>
+
 <p>With <a href="https://github.com/plataformatec/devise">Devise</a>, it will attach the user even if he / she signs in after the visit starts.</p>
+
+<p>With other authentication frameworks, add this to the end of your sign in method:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">if</span> <span class="n">current_visit</span>
+  <span class="n">current_visit</span><span class="o">.</span><span class="n">user</span> <span class="o">||=</span> <span class="n">current_user</span>
+  <span class="n">current_visit</span><span class="o">.</span><span class="n">save!</span>
+<span class="k">end</span>
+</pre></div>
 
 <p>To see the visits for a given user, create an association:</p>
 
@@ -145,7 +155,7 @@
 </pre></div>
 
 <h3>
-<a name="utm-parameters" class="anchor" href="#utm-parameters"><span class="octicon octicon-link"></span></a>UTM Parameters</h3>
+<a name="user-content-utm-parameters" class="anchor" href="#utm-parameters"><span class="octicon octicon-link"></span></a>UTM Parameters</h3>
 
 <p>Use UTM parameters to track campaigns. <a href="http://www.thunderseo.com/blog/utm-parameters/">This is great for emails and social media</a>. Just add them to your links and Ahoy will pick them up.</p>
 
@@ -158,18 +168,29 @@
 </code></pre>
 
 <h3>
-<a name="location" class="anchor" href="#location"><span class="octicon octicon-link"></span></a>Location</h3>
+<a name="user-content-location" class="anchor" href="#location"><span class="octicon octicon-link"></span></a>Location</h3>
 
 <p>Ahoy uses <a href="https://github.com/alexreisner/geocoder">Geocoder</a> for IP-based geocoding.</p>
 
 <h3>
-<a name="more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
+<a name="user-content-multiple-subdomains-master" class="anchor" href="#multiple-subdomains-master"><span class="octicon octicon-link"></span></a>Multiple Subdomains [master]</h3>
+
+<p>To track visits across multiple subdomains, add this to your layout <strong>before</strong> the javascript files.</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script&gt;</span>
+  <span class="kd">var</span> <span class="nx">Ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"domain"</span><span class="o">:</span> <span class="s2">"yourdomain.com"</span><span class="p">};</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<h3>
+<a name="user-content-more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
 
 <ul>
 <li>Excludes bots</li>
 <li>Degrades gracefully when cookies are disabled</li>
+<li>Don’t need a field? Just remove it from the migration</li>
 </ul><h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+<a name="user-content-installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Add this line to your application’s Gemfile:</p>
 
@@ -191,14 +212,27 @@ rake db:migrate
 <p>We recommend using traditional analytics services like <a href="http://www.google.com/analytics/">Google Analytics</a> as well.</p>
 
 <h2>
-<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
+<a name="user-content-reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h2>
+
+<p>Use a different model</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Ahoy</span><span class="o">.</span><span class="n">visit_model</span> <span class="o">=</span> <span class="no">UserVisit</span>
+</pre></div>
+
+<h2>
+<a name="user-content-todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
 
 <ul>
 <li>simple dashboard</li>
 <li>hook to store additional fields</li>
 <li>turn off modules</li>
 </ul><h2>
-<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+<a name="user-content-history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>History</h2>
+
+<p>View the <a href="https://github.com/ankane/ahoy/blob/master/CHANGELOG.md">changelog</a></p>
+
+<h2>
+<a name="user-content-contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
 <p>Everyone is encouraged to help improve this project. Here are a few ways you can help:</p>
 
