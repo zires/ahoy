@@ -173,12 +173,43 @@
 <p>Ahoy uses <a href="https://github.com/alexreisner/geocoder">Geocoder</a> for IP-based geocoding.</p>
 
 <h3>
-<a name="user-content-multiple-subdomains-master" class="anchor" href="#multiple-subdomains-master"><span class="octicon octicon-link"></span></a>Multiple Subdomains [master]</h3>
+<a name="user-content-multiple-subdomains" class="anchor" href="#multiple-subdomains"><span class="octicon octicon-link"></span></a>Multiple Subdomains</h3>
 
 <p>To track visits across multiple subdomains, add this to your layout <strong>before</strong> the javascript files.</p>
 
 <div class="highlight highlight-html"><pre><span class="nt">&lt;script&gt;</span>
   <span class="kd">var</span> <span class="nx">Ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"domain"</span><span class="o">:</span> <span class="s2">"yourdomain.com"</span><span class="p">};</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<h3>
+<a name="user-content-native-apps-master" class="anchor" href="#native-apps-master"><span class="octicon octicon-link"></span></a>Native Apps [master]</h3>
+
+<p>When a user launches the app, create a visit.  Send a <code>POST</code> request to <code>/ahoy/visits</code> with:</p>
+
+<ul>
+<li>platform - <code>iOS</code>, <code>Android</code>, etc.</li>
+<li>app_version - <code>1.0.0</code>
+</li>
+<li>os_version - <code>7.0.6</code>
+</li>
+<li>visitor_token - if you have one</li>
+</ul><p>The endpoint will return a JSON response like:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"visit_token"</span><span class="p">:</span> <span class="s2">"8tx2ziymkwa1WlppnkqxyaBaRlXrEQ3K"</span><span class="p">,</span>
+  <span class="nt">"visitor_token"</span><span class="p">:</span> <span class="s2">"hYBIV0rBfrIUAiArWweiECt4N9pyiygN"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Send the visit token in the <code>Ahoy-Visit</code> header for all requests.</p>
+
+<p>After 4 hours, create another visit and use the updated visit token.</p>
+
+<p>To change the platform on the web, use:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script&gt;</span>
+  <span class="kd">var</span> <span class="nx">Ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"platform"</span><span class="o">:</span> <span class="s2">"Mobile Web"</span><span class="p">}</span>
 <span class="nt">&lt;/script&gt;</span>
 </pre></div>
 
