@@ -4,6 +4,7 @@ require "geocoder"
 require "referer-parser"
 require "request_store"
 require "ahoy/version"
+require "ahoy/tracker"
 require "ahoy/controller"
 require "ahoy/model"
 require "ahoy/engine"
@@ -16,6 +17,14 @@ module Ahoy
 
   def self.visit_model=(visit_model)
     @visit_model = visit_model
+  end
+
+  def self.event_model
+    @event_model || ::Event
+  end
+
+  def self.event_model=(event_model)
+    @event_model = event_model
   end
 
   # TODO private

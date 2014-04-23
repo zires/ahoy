@@ -97,6 +97,7 @@ module Ahoy
 
     def visitable
       class_eval do
+
         belongs_to :visit
 
         before_create :set_visit
@@ -108,7 +109,19 @@ module Ahoy
             self.visit ||= RequestStore.store[:ahoy_controller].try(:send, :current_visit)
           end
         end
-      end
+
+      end # end class_eval
+    end
+
+    def ahoy_event
+      class_eval do
+
+        belongs_to :visit
+        belongs_to :user, polymorphic: true
+
+        serialize :properties
+
+      end # end class_eval
     end
 
   end

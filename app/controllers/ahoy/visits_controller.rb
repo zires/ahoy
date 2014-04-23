@@ -1,6 +1,5 @@
 module Ahoy
-  class VisitsController < ActionController::Base
-    before_filter :halt_bots
+  class VisitsController < Ahoy::BaseController
 
     def create
       visit_token = generate_token
@@ -28,16 +27,6 @@ module Ahoy
 
     def generate_token
       SecureRandom.urlsafe_base64(32).gsub(/[\-_]/, "").first(32)
-    end
-
-    def browser
-      @browser ||= Browser.new(ua: request.user_agent)
-    end
-
-    def halt_bots
-      if browser.bot?
-        render json: {}
-      end
     end
 
   end
