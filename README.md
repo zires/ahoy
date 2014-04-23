@@ -193,12 +193,56 @@ After 4 hours, create another visit and use the updated visit token.
 - Degrades gracefully when cookies are disabled
 - Don’t need a field? Just remove it from the migration
 
+## Events [events branch]
+
+You can also track events.
+
+```sh
+rails generate ahoy:events
+rake db:migrate
+```
+
+This creates a model to store events.
+
+## How It Works
+
+Each event has a `name` and `properties`.
+
+There are three ways to track events.
+
+#### JavaScript
+
+```javascript
+ahoy.track("Viewed book", {title: "The World is Flat"});
+```
+
+#### Ruby
+
+```ruby
+ahoy.track "Viewed book", title: "Hot, Flat, and Crowded"
+```
+
+#### Native Apps
+
+Send a `POST` request to `/ahoy/events` with:
+
+- name
+- properties
+
+Be sure to include the `Ahoy-Visit` header.
+
 ## Reference
 
-Use a different model
+Use a different visit model
 
 ```ruby
 Ahoy.visit_model = UserVisit
+```
+
+Use a different event model
+
+```ruby
+Ahoy.event_model = UserEvent
 ```
 
 Change the platform on the web
