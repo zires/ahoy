@@ -119,7 +119,16 @@
     var data = {name: name, properties: properties};
     log(data);
     deferred.done( function (e) {
-      $.post("/ahoy/events", data);
+      // ensure JSON is defined
+      if (typeof(JSON) !== "undefined") {
+        $.ajax({
+          type: "POST",
+          url: "/ahoy/events",
+          data: JSON.stringify(data),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json"
+        });
+      }
     });
   };
 
