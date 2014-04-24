@@ -96,8 +96,8 @@ With [Devise](https://github.com/plataformatec/devise), it will attach the user 
 With other authentication frameworks, add this to the end of your sign in method:
 
 ```ruby
-if current_visit
-  current_visit.user ||= current_user
+if current_visit and !current_visit.user
+  current_visit.user = current_user
   current_visit.save!
 end
 ```
@@ -192,6 +192,7 @@ After 4 hours, create another visit and use the updated visit token.
 - Excludes bots
 - Degrades gracefully when cookies are disabled
 - Don’t need a field? Just remove it from the migration
+- Visits are 4 hours by default
 
 ## Events [events branch]
 
