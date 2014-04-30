@@ -75,6 +75,32 @@
 <div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"utm_campaign"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="ss">:revenue</span><span class="p">)</span>
 </pre></div>
 
+<p><img class="emoji" title=":seedling:" alt=":seedling:" src="https://github.global.ssl.fastly.net/images/icons/emoji/seedling.png" height="20" width="20" align="absmiddle"> To track events like page views, check out <a href="https://github.com/ankane/ahoy_events">Ahoy Events</a>.</p>
+
+<p><img class="emoji" title=":postbox:" alt=":postbox:" src="https://github.global.ssl.fastly.net/images/icons/emoji/postbox.png" height="20" width="20" align="absmiddle"> To track emails, check out <a href="https://github.com/ankane/ahoy_email">Ahoy Email</a>.</p>
+
+<h2>
+<a name="user-content-installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add this line to your application’s Gemfile:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'ahoy_matey'</span>
+</pre></div>
+
+<p>And run the generator. This creates a model to store visits.</p>
+
+<div class="highlight highlight-sh"><pre>rails generate ahoy:install
+rake db:migrate
+</pre></div>
+
+<p>Lastly, include the javascript file in <code>app/assets/javascripts/application.js</code> after jQuery.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">//= require jquery</span>
+<span class="c1">//= require ahoy</span>
+</pre></div>
+
+<p>We recommend using traditional analytics services like <a href="http://www.google.com/analytics/">Google Analytics</a> as well.</p>
+
 <h2>
 <a name="user-content-how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How It Works</h2>
 
@@ -135,8 +161,8 @@
 
 <p>With other authentication frameworks, add this to the end of your sign in method:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="k">if</span> <span class="n">current_visit</span>
-  <span class="n">current_visit</span><span class="o">.</span><span class="n">user</span> <span class="o">||=</span> <span class="n">current_user</span>
+<div class="highlight highlight-ruby"><pre><span class="k">if</span> <span class="n">current_visit</span> <span class="ow">and</span> <span class="o">!</span><span class="n">current_visit</span><span class="o">.</span><span class="n">user</span>
+  <span class="n">current_visit</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">current_user</span>
   <span class="n">current_visit</span><span class="o">.</span><span class="n">save!</span>
 <span class="k">end</span>
 </pre></div>
@@ -175,15 +201,33 @@
 <h3>
 <a name="user-content-multiple-subdomains" class="anchor" href="#multiple-subdomains"><span class="octicon octicon-link"></span></a>Multiple Subdomains</h3>
 
-<p>To track visits across multiple subdomains, add this to your layout <strong>before</strong> the javascript files.</p>
+<p>To track visits across multiple subdomains, add this <strong>before</strong> the javascript files.</p>
 
-<div class="highlight highlight-html"><pre><span class="nt">&lt;script&gt;</span>
-  <span class="kd">var</span> <span class="nx">Ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"domain"</span><span class="o">:</span> <span class="s2">"yourdomain.com"</span><span class="p">};</span>
-<span class="nt">&lt;/script&gt;</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"domain"</span><span class="o">:</span> <span class="s2">"yourdomain.com"</span><span class="p">};</span>
 </pre></div>
 
 <h3>
-<a name="user-content-native-apps-master" class="anchor" href="#native-apps-master"><span class="octicon octicon-link"></span></a>Native Apps [master]</h3>
+<a name="user-content-development" class="anchor" href="#development"><span class="octicon octicon-link"></span></a>Development</h3>
+
+<p>Ahoy is built with developers in mind.  You can run the following code in your browser’s console.</p>
+
+<p>Force a new visit</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">ahoy</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span> <span class="c1">// then reload the page</span>
+</pre></div>
+
+<p>Log messages</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">ahoy</span><span class="p">.</span><span class="nx">debug</span><span class="p">();</span>
+</pre></div>
+
+<p>Turn off logging</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">ahoy</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="user-content-native-apps-experimental" class="anchor" href="#native-apps-experimental"><span class="octicon octicon-link"></span></a>Native Apps [experimental]</h3>
 
 <p>When a user launches the app, create a visit.  Send a <code>POST</code> request to <code>/ahoy/visits</code> with:</p>
 
@@ -213,29 +257,8 @@
 <li>Excludes bots</li>
 <li>Degrades gracefully when cookies are disabled</li>
 <li>Don’t need a field? Just remove it from the migration</li>
+<li>Visits are 4 hours by default</li>
 </ul><h2>
-<a name="user-content-installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
-
-<p>Add this line to your application’s Gemfile:</p>
-
-<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'ahoy_matey'</span>
-</pre></div>
-
-<p>And run the generator. This creates a model to store visits.</p>
-
-<div class="highlight highlight-sh"><pre>rails generate ahoy:install
-rake db:migrate
-</pre></div>
-
-<p>Lastly, include the javascript file in <code>app/assets/javascripts/application.js</code> after jQuery.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="c1">//= require jquery</span>
-<span class="c1">//= require ahoy</span>
-</pre></div>
-
-<p>We recommend using traditional analytics services like <a href="http://www.google.com/analytics/">Google Analytics</a> as well.</p>
-
-<h2>
 <a name="user-content-reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h2>
 
 <p>Use a different model</p>
@@ -245,9 +268,21 @@ rake db:migrate
 
 <p>Change the platform on the web</p>
 
-<div class="highlight highlight-html"><pre><span class="nt">&lt;script&gt;</span>
-  <span class="kd">var</span> <span class="nx">Ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"platform"</span><span class="o">:</span> <span class="s2">"Mobile Web"</span><span class="p">}</span>
-<span class="nt">&lt;/script&gt;</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"platform"</span><span class="o">:</span> <span class="s2">"Mobile Web"</span><span class="p">}</span>
+</pre></div>
+
+<p>Track additional values</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">Visit</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">ahoy_visit</span>
+
+  <span class="n">before_create</span> <span class="ss">:set_gclid</span>
+
+  <span class="k">def</span> <span class="nf">set_gclid</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">gclid</span> <span class="o">=</span> <span class="n">landing_params</span><span class="o">[</span><span class="s2">"GCLID"</span><span class="o">]</span> <span class="c1"># [master]</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
 </pre></div>
 
 <h2>
@@ -255,7 +290,6 @@ rake db:migrate
 
 <ul>
 <li>simple dashboard</li>
-<li>hook to store additional fields</li>
 <li>turn off modules</li>
 </ul><h2>
 <a name="user-content-history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>History</h2>
