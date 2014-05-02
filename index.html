@@ -227,7 +227,7 @@ rake db:migrate
 </pre></div>
 
 <h3>
-<a name="user-content-native-apps-experimental" class="anchor" href="#native-apps-experimental"><span class="octicon octicon-link"></span></a>Native Apps [experimental]</h3>
+<a name="user-content-native-apps" class="anchor" href="#native-apps"><span class="octicon octicon-link"></span></a>Native Apps</h3>
 
 <p>When a user launches the app, create a visit.  Send a <code>POST</code> request to <code>/ahoy/visits</code> with:</p>
 
@@ -249,6 +249,22 @@ rake db:migrate
 <p>Send the visit token in the <code>Ahoy-Visit</code> header for all requests.</p>
 
 <p>After 4 hours, create another visit and use the updated visit token.</p>
+
+<h3>
+<a name="user-content-doorkeeper" class="anchor" href="#doorkeeper"><span class="octicon octicon-link"></span></a>Doorkeeper</h3>
+
+<p>To attach the user with <a href="https://github.com/doorkeeper-gem/doorkeeper">Doorkeeper</a>, be sure you have a <code>current_resource_owner</code> method in <code>ApplicationController</code>.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">current_resource_owner</span>
+    <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">doorkeeper_token</span><span class="o">.</span><span class="n">resource_owner_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">doorkeeper_token</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div>
 
 <h3>
 <a name="user-content-more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
@@ -279,10 +295,25 @@ rake db:migrate
   <span class="n">before_create</span> <span class="ss">:set_gclid</span>
 
   <span class="k">def</span> <span class="nf">set_gclid</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">gclid</span> <span class="o">=</span> <span class="n">landing_params</span><span class="o">[</span><span class="s2">"GCLID"</span><span class="o">]</span> <span class="c1"># [master]</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">gclid</span> <span class="o">=</span> <span class="n">landing_params</span><span class="o">[</span><span class="s2">"gclid"</span><span class="o">]</span>
   <span class="k">end</span>
 
 <span class="k">end</span>
+</pre></div>
+
+<p>Use a method besides <code>current_user</code></p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Ahoy</span><span class="o">.</span><span class="n">user_method</span> <span class="o">=</span> <span class="ss">:true_user</span>
+</pre></div>
+
+<p>or use a Proc</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Ahoy</span><span class="o">.</span><span class="n">user_method</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span><span class="o">|</span><span class="n">controller</span><span class="o">|</span> <span class="n">controller</span><span class="o">.</span><span class="n">current_user</span> <span class="p">}</span>
+</pre></div>
+
+<p>Customize visitable</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">visitable</span> <span class="ss">:sign_up_visit</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="s2">"Visit"</span>
 </pre></div>
 
 <h2>
