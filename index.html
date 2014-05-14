@@ -48,7 +48,7 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <p class="lead"><img class="emoji" title=":fire:" alt=":fire:" src="https://github.global.ssl.fastly.net/images/icons/emoji/fire.png" height="20" width="20" align="absmiddle"> Simple, powerful visit tracking for Rails</p>
+          <p class="lead"><img class="emoji" title=":fire:" alt=":fire:" src="https://github.global.ssl.fastly.net/images/icons/emoji/fire.png" height="20" width="20" align="absmiddle"> Simple, powerful analytics for Rails</p>
         </div>
       </div>
       <div class="row">
@@ -61,7 +61,7 @@
 
 <p>You get:</p>
 
-<ul>
+<ul class="task-list">
 <li>
 <strong>traffic source</strong> - referrer, referring domain, landing page, search keyword</li>
 <li>
@@ -70,14 +70,17 @@
 <strong>technology</strong> - browser, OS, and device type</li>
 <li>
 <strong>utm parameters</strong> - source, medium, term, content, campaign</li>
-</ul><p>See which campaigns generate the most revenue effortlessly.</p>
+</ul><p>Track events in:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="no">Order</span><span class="o">.</span><span class="n">joins</span><span class="p">(</span><span class="ss">:visit</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"utm_campaign"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="ss">:revenue</span><span class="p">)</span>
-</pre></div>
+<ul class="task-list">
+<li>JavaScript</li>
+<li>Ruby</li>
+<li>Native apps</li>
+</ul><p>And store them wherever you’d like - your database, logs, external services, or all of them.</p>
 
-<p><img class="emoji" title=":seedling:" alt=":seedling:" src="https://github.global.ssl.fastly.net/images/icons/emoji/seedling.png" height="20" width="20" align="absmiddle"> To track events like page views, check out <a href="https://github.com/ankane/ahoy_events">Ahoy Events</a>.</p>
+<p><img class="emoji" title=":postbox:" alt=":postbox:" src="https://assets-cdn.github.com/images/icons/emoji/postbox.png" height="20" width="20" align="absmiddle"> To track emails, check out <a href="https://github.com/ankane/ahoy_email">Ahoy Email</a>.</p>
 
-<p><img class="emoji" title=":postbox:" alt=":postbox:" src="https://github.global.ssl.fastly.net/images/icons/emoji/postbox.png" height="20" width="20" align="absmiddle"> To track emails, check out <a href="https://github.com/ankane/ahoy_email">Ahoy Email</a>.</p>
+<p>No Ruby? Check out <a href="https://github.com/ankane/ahoy.js">Ahoy.js</a>.</p>
 
 <h2>
 <a name="user-content-installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -141,7 +144,7 @@ rake db:migrate
 
 <p>When a visitor places an order, the <code>visit_id</code> column is automatically set.</p>
 
-<p><img class="emoji" title=":tada:" alt=":tada:" src="https://github.global.ssl.fastly.net/images/icons/emoji/tada.png" height="20" width="20" align="absmiddle"> Magic!</p>
+<p><img class="emoji" title=":tada:" alt=":tada:" src="https://assets-cdn.github.com/images/icons/emoji/tada.png" height="20" width="20" align="absmiddle"> Magic!</p>
 
 <p>See where orders are coming from with simple joins:</p>
 
@@ -154,8 +157,6 @@ rake db:migrate
 <a name="user-content-users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h3>
 
 <p>Ahoy automatically attaches the <code>current_user</code> to the <code>current_visit</code>.</p>
-
-<p>If you define your own <code>current_user</code> method, be sure to add it to <code>ActionController::Base</code>, not <code>ApplicationController</code>.</p>
 
 <p>With <a href="https://github.com/plataformatec/devise">Devise</a>, it will attach the user even if he / she signs in after the visit starts.</p>
 
@@ -194,20 +195,109 @@ rake db:migrate
 </code></pre>
 
 <h3>
-<a name="user-content-location" class="anchor" href="#location"><span class="octicon octicon-link"></span></a>Location</h3>
+<a name="user-content-native-apps" class="anchor" href="#native-apps"><span class="octicon octicon-link"></span></a>Native Apps</h3>
 
-<p>Ahoy uses <a href="https://github.com/alexreisner/geocoder">Geocoder</a> for IP-based geocoding.</p>
+<p>When a user launches the app, create a visit.  Send a <code>POST</code> request to <code>/ahoy/visits</code> with:</p>
 
-<h3>
-<a name="user-content-multiple-subdomains" class="anchor" href="#multiple-subdomains"><span class="octicon octicon-link"></span></a>Multiple Subdomains</h3>
+<ul class="task-list">
+<li>platform - <code>iOS</code>, <code>Android</code>, etc.</li>
+<li>app_version - <code>1.0.0</code>
+</li>
+<li>os_version - <code>7.0.6</code>
+</li>
+<li>visitor_token - if you have one</li>
+</ul><p>The endpoint will return a JSON response like:</p>
 
-<p>To track visits across multiple subdomains, add this <strong>before</strong> the javascript files.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"domain"</span><span class="o">:</span> <span class="s2">"yourdomain.com"</span><span class="p">};</span>
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"visit_token"</span><span class="p">:</span> <span class="s2">"8tx2ziymkwa1WlppnkqxyaBaRlXrEQ3K"</span><span class="p">,</span>
+  <span class="nt">"visitor_token"</span><span class="p">:</span> <span class="s2">"hYBIV0rBfrIUAiArWweiECt4N9pyiygN"</span>
+<span class="p">}</span>
 </pre></div>
 
+<p>Send the visit token in the <code>Ahoy-Visit</code> header for all requests.</p>
+
+<p>After 4 hours, create another visit and use the updated visit token.</p>
+
+<h2>
+<a name="user-content-events" class="anchor" href="#events"><span class="octicon octicon-link"></span></a>Events</h2>
+
+<p>Each event has a <code>name</code> and <code>properties</code>.</p>
+
+<p>There are three ways to track events.</p>
+
+<h4>
+<a name="user-content-javascript" class="anchor" href="#javascript"><span class="octicon octicon-link"></span></a>JavaScript</h4>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">ahoy</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="s2">"Viewed book"</span><span class="p">,</span> <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s2">"The World is Flat"</span><span class="p">});</span>
+</pre></div>
+
+<p>or track all views and clicks with:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">ahoy</span><span class="p">.</span><span class="nx">trackAll</span><span class="p">();</span>
+</pre></div>
+
+<h4>
+<a name="user-content-ruby" class="anchor" href="#ruby"><span class="octicon octicon-link"></span></a>Ruby</h4>
+
+<div class="highlight highlight-ruby"><pre><span class="n">ahoy</span><span class="o">.</span><span class="n">track</span> <span class="s2">"Viewed book"</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s2">"Hot, Flat, and Crowded"</span>
+</pre></div>
+
+<h4>
+<a name="user-content-native-apps-1" class="anchor" href="#native-apps-1"><span class="octicon octicon-link"></span></a>Native Apps</h4>
+
+<p>Send a <code>POST</code> request to <code>/ahoy/events</code> with:</p>
+
+<ul class="task-list">
+<li>name</li>
+<li>properties</li>
+<li>user token (depends on your authentication framework)</li>
+<li>
+<code>Ahoy-Visit</code> header</li>
+</ul><p>Requests should have <code>Content-Type: application/json</code>.</p>
+
 <h3>
-<a name="user-content-development" class="anchor" href="#development"><span class="octicon octicon-link"></span></a>Development</h3>
+<a name="user-content-storing-events" class="anchor" href="#storing-events"><span class="octicon octicon-link"></span></a>Storing Events</h3>
+
+<p>You choose how to store events.</p>
+
+<h4>
+<a name="user-content-activerecord" class="anchor" href="#activerecord"><span class="octicon octicon-link"></span></a>ActiveRecord</h4>
+
+<p>Create an <code>Ahoy::Event</code> model to store events.</p>
+
+<div class="highlight highlight-sh"><pre>rails generate ahoy:events:active_record
+rake db:migrate
+</pre></div>
+
+<h4>
+<a name="user-content-custom" class="anchor" href="#custom"><span class="octicon octicon-link"></span></a>Custom</h4>
+
+<p>Create your own subscribers in <code>config/initializers/ahoy.rb</code>.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">LogSubscriber</span>
+
+  <span class="k">def</span> <span class="nf">track</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span>
+      <span class="ss">properties</span><span class="p">:</span> <span class="n">properties</span><span class="p">,</span>
+      <span class="ss">time</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:time</span><span class="o">].</span><span class="n">to_i</span><span class="p">,</span>
+      <span class="n">visit_id</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:visit</span><span class="o">].</span><span class="n">try</span><span class="p">(</span><span class="ss">:id</span><span class="p">),</span>
+      <span class="n">user_id</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:user</span><span class="o">].</span><span class="n">try</span><span class="p">(</span><span class="ss">:id</span><span class="p">),</span>
+      <span class="ss">ip</span><span class="p">:</span> <span class="n">options</span><span class="o">[</span><span class="ss">:controller</span><span class="o">].</span><span class="n">try</span><span class="p">(</span><span class="ss">:request</span><span class="p">)</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:remote_ip</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="no">Rails</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span> <span class="n">data</span><span class="o">.</span><span class="n">to_json</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+
+<span class="c1"># and add it</span>
+<span class="no">Ahoy</span><span class="o">.</span><span class="n">subscribers</span> <span class="o">&lt;&lt;</span> <span class="no">LogSubscriber</span><span class="o">.</span><span class="n">new</span>
+</pre></div>
+
+<p>Add as many subscribers as you’d like.</p>
+
+<h2>
+<a name="user-content-development" class="anchor" href="#development"><span class="octicon octicon-link"></span></a>Development</h2>
 
 <p>Ahoy is built with developers in mind.  You can run the following code in your browser’s console.</p>
 
@@ -227,30 +317,14 @@ rake db:migrate
 </pre></div>
 
 <h3>
-<a name="user-content-native-apps" class="anchor" href="#native-apps"><span class="octicon octicon-link"></span></a>Native Apps</h3>
+<a name="user-content-more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
 
-<p>When a user launches the app, create a visit.  Send a <code>POST</code> request to <code>/ahoy/visits</code> with:</p>
-
-<ul>
-<li>platform - <code>iOS</code>, <code>Android</code>, etc.</li>
-<li>app_version - <code>1.0.0</code>
-</li>
-<li>os_version - <code>7.0.6</code>
-</li>
-<li>visitor_token - if you have one</li>
-</ul><p>The endpoint will return a JSON response like:</p>
-
-<div class="highlight highlight-json"><pre><span class="p">{</span>
-  <span class="nt">"visit_token"</span><span class="p">:</span> <span class="s2">"8tx2ziymkwa1WlppnkqxyaBaRlXrEQ3K"</span><span class="p">,</span>
-  <span class="nt">"visitor_token"</span><span class="p">:</span> <span class="s2">"hYBIV0rBfrIUAiArWweiECt4N9pyiygN"</span>
-<span class="p">}</span>
-</pre></div>
-
-<p>Send the visit token in the <code>Ahoy-Visit</code> header for all requests.</p>
-
-<p>After 4 hours, create another visit and use the updated visit token.</p>
-
-<h3>
+<ul class="task-list">
+<li>Excludes bots</li>
+<li>Degrades gracefully when cookies are disabled</li>
+<li>Don’t need a field? Just remove it from the migration</li>
+<li>Visits are 4 hours by default</li>
+</ul><h3>
 <a name="user-content-doorkeeper" class="anchor" href="#doorkeeper"><span class="octicon octicon-link"></span></a>Doorkeeper</h3>
 
 <p>To attach the user with <a href="https://github.com/doorkeeper-gem/doorkeeper">Doorkeeper</a>, be sure you have a <code>current_resource_owner</code> method in <code>ApplicationController</code>.</p>
@@ -266,20 +340,12 @@ rake db:migrate
 <span class="k">end</span>
 </pre></div>
 
-<h3>
-<a name="user-content-more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
-
-<ul>
-<li>Excludes bots</li>
-<li>Degrades gracefully when cookies are disabled</li>
-<li>Don’t need a field? Just remove it from the migration</li>
-<li>Visits are 4 hours by default</li>
-</ul><h2>
+<h2>
 <a name="user-content-reference" class="anchor" href="#reference"><span class="octicon octicon-link"></span></a>Reference</h2>
 
-<p>Use a different model</p>
+<p>To track visits across multiple subdomains, add this <strong>before</strong> the javascript files.</p>
 
-<div class="highlight highlight-ruby"><pre><span class="no">Ahoy</span><span class="o">.</span><span class="n">visit_model</span> <span class="o">=</span> <span class="no">UserVisit</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ahoy</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"domain"</span><span class="o">:</span> <span class="s2">"yourdomain.com"</span><span class="p">};</span>
 </pre></div>
 
 <p>Change the platform on the web</p>
@@ -316,10 +382,60 @@ rake db:migrate
 <div class="highlight highlight-ruby"><pre><span class="n">visitable</span> <span class="ss">:sign_up_visit</span><span class="p">,</span> <span class="n">class_name</span><span class="p">:</span> <span class="s2">"Visit"</span>
 </pre></div>
 
+<p>Track view</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">ahoy</span><span class="p">.</span><span class="nx">trackView</span><span class="p">();</span>
+</pre></div>
+
+<p>Track clicks</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">ahoy</span><span class="p">.</span><span class="nx">trackClicks</span><span class="p">();</span>
+</pre></div>
+
+<p>Track all Rails actions</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">after_filter</span> <span class="ss">:track_action</span>
+
+  <span class="kp">protected</span>
+
+  <span class="k">def</span> <span class="nf">track_action</span>
+    <span class="n">ahoy</span><span class="o">.</span><span class="n">track</span> <span class="s2">"Hit action"</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">filtered_parameters</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>Use a different model for visits</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Ahoy</span><span class="o">.</span><span class="n">visit_model</span> <span class="o">=</span> <span class="no">UserVisit</span>
+
+<span class="c1"># fix for Rails reloader in development</span>
+<span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Reloader</span><span class="o">.</span><span class="n">to_prepare</span> <span class="k">do</span>
+  <span class="no">Ahoy</span><span class="o">.</span><span class="n">visit_model</span> <span class="o">=</span> <span class="no">UserVisit</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>Use a different model for events</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Ahoy</span><span class="o">.</span><span class="n">subscribers</span> <span class="o">&lt;&lt;</span> <span class="no">Ahoy</span><span class="o">::</span><span class="no">Subscribers</span><span class="o">::</span><span class="no">ActiveRecord</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">model</span><span class="p">:</span> <span class="no">Event</span><span class="p">)</span>
+</pre></div>
+
+<h2>
+<a name="user-content-upgrading" class="anchor" href="#upgrading"><span class="octicon octicon-link"></span></a>Upgrading</h2>
+
+<p>In <code>0.1.6</code>, a big improvement was made to <code>browser</code> and <code>os</code>. Update existing visits with:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Visit</span><span class="o">.</span><span class="n">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">visit</span><span class="o">|</span>
+  <span class="n">visit</span><span class="o">.</span><span class="n">set_technology</span>
+  <span class="n">visit</span><span class="o">.</span><span class="n">save!</span> <span class="k">if</span> <span class="n">visit</span><span class="o">.</span><span class="n">changed?</span>
+<span class="k">end</span>
+</pre></div>
+
 <h2>
 <a name="user-content-todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
 
-<ul>
+<ul class="task-list">
+<li>better readme</li>
 <li>simple dashboard</li>
 <li>turn off modules</li>
 </ul><h2>
@@ -332,7 +448,7 @@ rake db:migrate
 
 <p>Everyone is encouraged to help improve this project. Here are a few ways you can help:</p>
 
-<ul>
+<ul class="task-list">
 <li><a href="https://github.com/ankane/ahoy/issues">Report bugs</a></li>
 <li>Fix bugs and <a href="https://github.com/ankane/ahoy/pulls">submit pull requests</a>
 </li>
