@@ -59,6 +59,9 @@ module Ahoy
   mattr_accessor :geocode
   self.geocode = true
 
+  mattr_accessor :patterns_path
+  self.patterns_path = File.expand_path("../../regexes.yaml", __FILE__)
+
   def self.ensure_uuid(id)
     valid = UUIDTools::UUID.parse(id) rescue nil
     if valid

@@ -44,7 +44,7 @@ module Ahoy
 
       # performance
       def self.user_agent_parser
-        @user_agent_parser ||= UserAgentParser::Parser.new
+        @user_agent_parser ||= UserAgentParser::Parser.new(patterns_path: Ahoy.patterns_path)
       end
     end
   end
