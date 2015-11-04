@@ -28,6 +28,10 @@ module Ahoy
         request.params["platform"]
       end
 
+      def app_name
+        request.params["app_name"]
+      end
+
       def app_version
         request.params["app_version"]
       end
