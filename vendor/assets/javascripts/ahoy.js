@@ -136,7 +136,7 @@
       "class": $target.attr("class"),
       page: page(),
       section: $target.closest("*[data-section]").data("section"),
-      anchor_token: getCookie("ahoy_anchor");
+      anchor_token: getCookie("ahoy_anchor")
     };
   }
 
