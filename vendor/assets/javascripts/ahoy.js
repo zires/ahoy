@@ -115,6 +115,8 @@
                 break;
               }
             }
+            // save last event id
+            setCookie("ahoy_trigger_token", event.id, 1)
             saveEventQueue();
           }
         });
@@ -133,7 +135,8 @@
       id: $target.attr("id"),
       "class": $target.attr("class"),
       page: page(),
-      section: $target.closest("*[data-section]").data("section")
+      section: $target.closest("*[data-section]").data("section"),
+      anchor_token: getCookie("ahoy_anchor");
     };
   }
 
