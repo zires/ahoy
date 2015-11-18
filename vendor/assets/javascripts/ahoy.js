@@ -115,8 +115,6 @@
                 break;
               }
             }
-            // save last event id
-            setCookie("ahoy_trigger_token", event.id, 1)
             saveEventQueue();
           }
         });
@@ -229,6 +227,9 @@
 
     eventQueue.push(event);
     saveEventQueue();
+
+    // save last event id
+    setCookie("ahoy_trigger_token", event.id, 4 * 60)
 
     // wait in case navigating to reduce duplicate events
     setTimeout( function () {
