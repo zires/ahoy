@@ -24,7 +24,13 @@ module Ahoy
           id: event["id"],
           time: time
         }
-        ahoy.track event["name"], event["properties"], options
+
+        properties = event["properties"] || {}
+        if cookies.signed[:_utm].present?
+          properties[:_utm] = JSON.parse cookies.signed[:_utm]
+        end
+
+        ahoy.track event["name"], properties, options
       end
       render json: {}
     end
