@@ -29,6 +29,7 @@ module Ahoy
         if cookies.signed[:_utm].present?
           properties[:_utm] = JSON.parse cookies.signed[:_utm]
         end
+        properties[:utm_salt] = cookies[:_ca_utm]
 
         ahoy.track event["name"], properties, options
       end
