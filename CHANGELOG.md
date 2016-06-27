@@ -1,3 +1,37 @@
+## 1.4.2
+
+- Fixed issues with `where_properties`
+
+## 1.4.1
+
+- Added `where_properties` method
+- Added Kafka store
+- Added `mount` option
+- Use less intrusive version of `safely`
+
+## 1.4.0
+
+- Use `ActiveRecordTokenStore` by default (integer instead of uuid for id)
+- Detect database for `rails g ahoy:stores:active_record` for easier installation
+- Use `safely` as default exception handler
+- Fixed issue with log silencer
+
+## 1.3.1
+
+- Raise errors in test environment
+
+## 1.3.0
+
+- Added throttling
+- Added `max_content_length` and `max_events_per_request`
+
+## 1.2.2
+
+- Fixed issue with latest version of `browser` gem
+- Added support for RabbitMQ
+- Added support for Amazon Kinesis Firehose
+- Fixed deprecation warnings in Rails 5
+
 ## 1.2.1
 
 - Fixed `SystemStackError: stack level too deep` when used with `activerecord-session_store`
