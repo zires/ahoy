@@ -12,7 +12,7 @@ module Ahoy
       end
       class_eval %{
         def set_visit
-          self.#{name} ||= RequestStore.store[:ahoy].try(:visit)
+          self.#{name}_id ||= RequestStore.store[:ahoy].try(:visit_id)
         end
       }
     end
